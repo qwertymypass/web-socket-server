@@ -1,0 +1,45 @@
+{
+  "name": "web-sockets",
+  "version": "2.0.0",
+  "description": "API v3 Web-Socket Service",
+  "main": "dist/app.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/app.ts",
+    "start:dev": "yarn build && node ./dist/app.js",
+    "start:debug": "yarn build && node --inspect-brk ./dist/app.js",
+    "start": "mkdir logs; forever start -p ./ -l logs/$(date +%d-%m-%y-%T.log) dist/app.js --max-old-space-size=2096",
+    "stop": "forever stop dist/app.js",
+    "restart": "yarn stop; yarn start",
+    "build": "rm -rf ./dist && ./node_modules/typescript/bin/tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' && prettier --write 'src/**/*.ts' 'tests/**/*.ts'",
+    "test": "jest --verbose",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "doc": "./node_modules/typedoc/bin/typedoc -out ./docs --theme node_modules/typedoc-clarity-theme/bin --includes 'mdDocs/' --readme maindoc.md"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.3",
+    "js-yaml": "^3.13.1",
+    "stack-trace": "^0.0.10",
+    "winston": "^3.2.1",
+    "ws": "^6.1.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "0.5.13",
+    "@types/jest": "^24.0.11",
+    "@types/mysql": "^2.15.5",
+    "@types/node": "^11.13.17",
+    "@types/stack-trace": "^0.0.29",
+    "@types/uniqid": "^4.1.3",
+    "@types/ws": "^6.0.1",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.2.0",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.14.2",
+    "typedoc-clarity-theme": "^1.1.0",
+    "typescript": "^3.4.2",
+    "uniqid": "^5.2.0"
+  }
+}
