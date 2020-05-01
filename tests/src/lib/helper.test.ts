@@ -9,7 +9,7 @@ describe('Get Routing Key', () => {
       type: 'type',
       resource: 'resource',
       resourceID: '1',
-      contextType: 'context',
+      context: 'context',
       contextID: '2'
     };
 

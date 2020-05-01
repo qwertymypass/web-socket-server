@@ -1,8 +1,7 @@
 import WebSocket from 'ws';
 import amqp from 'amqplib';
-import stackTrace from 'stack-trace';
 import { IncomingMessage } from 'http';
-import { logger } from './lib/logger';
+import logger from 'very-simple-logger';
 import RabbitMQClient from './lib/mq-client';
 import WSPoolManager from './lib/ws-pool-manager';
 import WSClient from './lib/ws-client';
@@ -62,7 +61,7 @@ function connectionCallback(mqChannel: amqp.Channel, ws: WebSocket, req: Incomin
    */
   function closingClient(err?: Error): void {
     if (err && err.message) {
-      logger.error('Socket Error', { message: err.message, wsID }, stackTrace.get());
+      logger.error('Socket Error', { message: err.message, wsID });
     }
 
     client.closeClient();

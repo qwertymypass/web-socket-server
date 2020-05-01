@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { logger } from './logger';
+import logger from 'very-simple-logger';
 import { IWsMessage } from '../types/interfaces';
 
 export default class Helper {
@@ -23,8 +23,8 @@ export default class Helper {
    * @returns {string}
    */
   public getRoutingKey(message: IWsMessage): string {
-    const { method = '*', resource = '*', resourceID = '*', contextType = '*', contextID = '*' } = message;
-    return `${method}.${resource}.${resourceID}.${contextType}.${contextID}`;
+    const { method = '*', resource = '*', resourceID = '*', context = '*', contextID = '*' } = message;
+    return `${method}.${resource}.${resourceID}.${context}.${contextID}`;
   }
 
   /**

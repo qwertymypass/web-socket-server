@@ -1,8 +1,7 @@
 import amqp from 'amqplib';
-import { logger } from './logger';
+import logger from 'very-simple-logger';
 import { IRabbitmq } from '@/src/types/interfaces';
 import { EventEmitter } from 'events';
-import stackTrace from 'stack-trace';
 
 export default class RabbitMQClient extends EventEmitter {
   private readonly url: string;
@@ -36,7 +35,7 @@ export default class RabbitMQClient extends EventEmitter {
 
       this.emit('ready', this.connection, this.channel);
     } catch (err) {
-      logger.error('Field connect to RabbitMQ', { message: err.message }, stackTrace.get());
+      logger.error('Field connect to RabbitMQ', { message: err.message });
       process.exit(1);
     }
   }
@@ -46,7 +45,7 @@ export default class RabbitMQClient extends EventEmitter {
    * @param {Error} err
    */
   private async errorMqConnection(err: Error): Promise<void> {
-    logger.error('Error message from RabbitMQ', { message: err.message, error: err }, stackTrace.get());
+    logger.error('Error message from RabbitMQ', { message: err.message, error: err });
     process.exit(1);
   }
 }

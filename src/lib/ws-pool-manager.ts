@@ -1,4 +1,4 @@
-import { logger } from './logger';
+import logger from 'very-simple-logger';
 import WSClient from './ws-client';
 
 export default class WSPoolManager {

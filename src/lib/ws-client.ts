@@ -1,10 +1,8 @@
 import WebSocket from 'ws';
 import amqp from 'amqplib';
-import stackTrace from 'stack-trace';
 import Helper from './helper';
-import { logger } from './logger';
+import logger from 'very-simple-logger';
 import { IRabbitmq } from '../types/interfaces';
-import config from '../config';
 
 export default class WSClient {
   private readonly wsID: string;
@@ -30,8 +28,7 @@ export default class WSClient {
     this.exchange = exchange;
     this.assertOptions = { autoDelete, durable };
 
-    const logLevel = this.helper.getByPath(config, 'logSettings.level');
-    this.isDebug = logLevel === 'debug' ? true : false;
+    this.isDebug = process.env.NODE_ENV === 'development';
   }
 
   public isReady(): boolean {
@@ -51,7 +48,7 @@ export default class WSClient {
     return this.channel
       .assertQueue(wsID, assertOptions)
       .then(() => this.consume())
-      .catch((err: Error) => logger.error('Queue Asserting Error', { message: err.message, wsID }, stackTrace.get()));
+      .catch((err: Error) => logger.error('Queue Asserting Error', { message: err.message, wsID }));
   }
 
   /**
@@ -71,7 +68,7 @@ export default class WSClient {
         bindings.add(routingKey);
         logger.debug('Binding by routing key', { wsID, routingKey });
       })
-      .catch((err: Error) => logger.error('Binding queue Error', { message: err.message }, stackTrace.get()));
+      .catch((err: Error) => logger.error('Binding queue Error', { message: err.message }));
   }
 
   /**
@@ -90,7 +87,7 @@ export default class WSClient {
         bindings.delete(routingKey);
         logger.debug('Unbinding by routing key', { wsID, routingKey });
       })
-      .catch((err: Error) => logger.error('Unbinding Queue Error', { message: err.message }, stackTrace.get()));
+      .catch((err: Error) => logger.error('Unbinding Queue Error', { message: err.message }));
   }
 
   /**
@@ -127,7 +124,7 @@ export default class WSClient {
           this.channel.deleteQueue(wsID);
           logger.info('Queue has been deleted', { wsID });
         })
-        .catch((err: Error) => logger.error('Delete Queue Error', { message: err.message, wsID }, stackTrace.get()));
+        .catch((err: Error) => logger.error('Delete Queue Error', { message: err.message, wsID }));
     });
   }
 
@@ -143,7 +140,7 @@ export default class WSClient {
     const toUnbinding = Array.from(bindings).map(rk => this.channel.unbindQueue(wsID, exchange, rk));
     return Promise.all(toUnbinding)
       .then(() => logger.info('Bindings have been cleared', { wsID }))
-      .catch((err: Error) => logger.error('Clear bindings Error', { message: err.message, wsID }, stackTrace.get()));
+      .catch((err: Error) => logger.error('Clear bindings Error', { message: err.message, wsID }));
   }
 
   /**
