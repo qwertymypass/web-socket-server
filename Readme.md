@@ -7,15 +7,6 @@ Implements basic functionality of working with web-sockets
 1. Copy config.yaml.template to config.yaml
 2. Add server port 
 3. Configure config.yaml
-4. Change value **logSettings** in config
-    1. **level** [string]
-       1. development - debug
-       2. production - info
-       3. test - off
-    2. **format** [number] - Format of logs in JSON
-       1. **1** - SIMPLE
-       2. **2** - JSON
-    3. **colorize** [boolean] - Logs in colors
 
 The service listens ws-connections. For each incomming ws-connection Web-socket service creates Rabbit MQ queue and bind it to Rabit MQ exchange (with name from config) according to routingKey mask. This routingKey mask is been building from subscribing message which should be received from client throw ws-connection.
 
