@@ -1,4 +1,4 @@
-# Web-sockets Service
+# Web Socket Server
 
 Implements basic functionality of working with web-sockets
 
@@ -23,11 +23,10 @@ The format of allowed incomming message fromg client:
 ```
    {
      "type": "<type>",
-     "wsConnectionID": "<wsConnectionID>",
      "method": "<method>",
      "resource": "<resource>",
      "resourceID": "<esourceID>",
-     "contextType": "<contextType>",
+     "context": "<context>",
      "contextID": "<contextID>"
    }
 ```
@@ -40,7 +39,7 @@ The type 'ping' provides using the ping-pong protocol for checking are ws-connec
 The processinc messages with type 'subscribe' on the web-socket server side creates the  RabbitMQ queue with unique string name whish is binded to RabbitMQ exchange (with name  from config.yaml) with routingKey:
 
 ```
-    <method>.<resource>.<resourceID>.<contextType>.<contextID>
+    <method>.<resource>.<resourceID>.<context>.<contextID>
 ```
 
 If some parameter is missed it replaced with '*'
